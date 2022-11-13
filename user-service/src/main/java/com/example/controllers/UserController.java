@@ -12,21 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
 @Slf4j
 public class UserController {
 
     private final List<UserDTO> users = List.of(new UserDTO("dima", 1L));
 
-    @GetMapping("/all")
+    @GetMapping("/users/all")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         return ResponseEntity.ok(users);
     }
 
-    @ExceptionHandler(Throwable.class)
-    public String handleAnyException(Throwable ex, HttpServletRequest request) {
-        log.error("{}", request.getRequestURL());
-        return request.getRequestURI();
+    @GetMapping("/users/")
+    public ResponseEntity<List<UserDTO>> getAllUsers2() {
+        return ResponseEntity.ok(users);
     }
 
 }

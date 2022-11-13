@@ -17,9 +17,4 @@ public class CommonController {
         return "ok: /users";
     }
 
-    @GetMapping("/*")
-    public String getAnother(Request request) {
-        return request.getRequestURI();
-    }
-
 }
