@@ -36,7 +36,7 @@ spec:
           # образ никогда не будет скачиваться из-вне, только из имеющихся уже на устройстве локально
           imagePullPolicy: Never
           ports:
-            - containerPort: 8082
+            - containerPort: 8080
 
 ---
 
@@ -62,7 +62,7 @@ spec:
           image: user
           imagePullPolicy: Never
           ports:
-            - containerPort: 8083
+            - containerPort: 8080
 
 ---
 
@@ -83,7 +83,7 @@ spec:
       # Порт на сервисе
       port: 80
       # Порт на поде (в контейнере)
-      targetPort: 8083
+      targetPort: 8080
   type: NodePort
 
 ---
@@ -105,5 +105,5 @@ spec:
       # Порт на сервисе
       port: 80
       # Порт на поде (в контейнере)
-      targetPort: 8082
+      targetPort: 8080
   type: NodePort
