@@ -20,14 +20,14 @@ spec:
   selector:
     #Поды, у которых есть такой label
     matchLabels:
-      app: coordinator-pod
+      project: coordinator-pod
     #Описание подов этого деплоймента
   template:
     metadata:
       name: coordinator-pod
       #Очевидно, что должны быть такие же labels, какие мы указали в matchLabels в деплойменте
       labels:
-        app: coordinator-pod
+        project: coordinator-pod
     spec:
       #Описываем, какие контейнеры будут в этом поде
       containers:
@@ -50,12 +50,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: user-pod
+      project: user-pod
   template:
     metadata:
       name: user-pod
       labels:
-        app: user-pod
+        project: user-pod
     spec:
       containers:
         - name: user-container
@@ -71,12 +71,11 @@ kind: Service
 metadata:
   name: user-service
   namespace: mimikube-dev
-  labels:
 spec:
   # На какие поды будет работать этот сервис
   selector:
     # все поды с таким лейблом
-    app: user-pod
+    project: user-pod
   ports:
     - name: user-port
       protocol: TCP
@@ -93,12 +92,11 @@ kind: Service
 metadata:
   name: coordinator-service
   namespace: mimikube-dev
-  labels:
 spec:
   # На какие поды будет работать этот сервис
   selector:
     # все поды с таким лейблом
-    app: coordinator-pod
+    project: coordinator-pod
   ports:
     - name: coordinator-port
       protocol: TCP
