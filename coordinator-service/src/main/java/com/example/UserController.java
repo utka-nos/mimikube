@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/coordinator/users")
 public class UserController {
 
     private List<UserDTO> users = List.of(
