@@ -58,6 +58,7 @@ pipeline{
                         del temp.cmd
 
                         kubectl apply -f kubernetes.yml
+                        kubectl apply -f ingress.yml
                     '''
                 }
             }
