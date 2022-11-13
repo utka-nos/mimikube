@@ -20,14 +20,14 @@ spec:
   selector:
     #Поды, у которых есть такой label
     matchLabels:
-      project: coordinator-pod
+      app: coordinator-pod
     #Описание подов этого деплоймента
   template:
     metadata:
       name: coordinator-pod
       #Очевидно, что должны быть такие же labels, какие мы указали в matchLabels в деплойменте
       labels:
-        project: coordinator-pod
+        app: coordinator-pod
     spec:
       #Описываем, какие контейнеры будут в этом поде
       containers:
@@ -50,12 +50,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      project: user-pod
+      app: user-pod
   template:
     metadata:
       name: user-pod
       labels:
-        project: user-pod
+        app: user-pod
     spec:
       containers:
         - name: user-container
@@ -76,7 +76,7 @@ spec:
   # На какие поды будет работать этот сервис
   selector:
     # все поды с таким лейблом
-    project: user-pod
+    app: user-pod
   ports:
     - name: user-port
       protocol: TCP
@@ -98,7 +98,7 @@ spec:
   # На какие поды будет работать этот сервис
   selector:
     # все поды с таким лейблом
-    project: coordinator-pod
+    app: coordinator-pod
   ports:
     - name: coordinator-port
       protocol: TCP
