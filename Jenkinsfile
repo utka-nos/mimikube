@@ -53,6 +53,10 @@ pipeline{
             steps{
                 script{
                     bat '''
+                        minikube -p minikube docker-env --shell cmd > temp.cmd
+                        call temp.cmd
+                        del temp.cmd
+
                         kubectl apply -f kubernetes.yml
                     '''
                 }
