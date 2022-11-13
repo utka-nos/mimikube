@@ -44,7 +44,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-deployment
-  namespace: mimikube
+  namespace: mimikube-dev
   labels:
     app: user-label
 spec:
