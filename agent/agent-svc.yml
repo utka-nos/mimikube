@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: agent-service
   namespace: mimikube-dev
-spce:
+spec:
   selector:
     name: agent-pod
   ports:
