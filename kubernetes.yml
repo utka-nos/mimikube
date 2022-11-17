@@ -62,7 +62,7 @@ spec:
           image: user
           imagePullPolicy: Never
           ports:
-            - containerPort: 8080
+            - containerPort: 8082
 
 ---
 
@@ -82,7 +82,7 @@ spec:
       # Порт на сервисе
       port: 80
       # Порт на поде (в контейнере)
-      targetPort: 8080
+      targetPort: 8082
   type: NodePort
 
 ---
