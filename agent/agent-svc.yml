@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent-service
+  namespace: mimikube-dev
+spce:
+  selector:
+    name: agent-pod
+  ports:
+    - name: agent-svc-port
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+  type: NodePort

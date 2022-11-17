@@ -59,6 +59,11 @@ pipeline{
 
                         kubectl apply -f kubernetes.yml
                         kubectl apply -f ingress.yml
+
+                        kubectl apply -f ./agent/agent-cm.yml
+                        kubectl apply -f ./agent/agent-dc.yml
+                        kubectl apply -f ./agent/agent-svc.yml
+
                     '''
                 }
             }
