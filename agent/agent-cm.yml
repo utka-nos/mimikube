@@ -15,4 +15,4 @@ data:
         scrape_interval: 5s
         metrics_path: /actuator/prometheus
         static_configs:
-          - targets: ['10.106.133.25:80']
+          - targets: ['user-service']

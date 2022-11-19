@@ -57,13 +57,23 @@ pipeline{
                         call temp.cmd
                         del temp.cmd
 
+                        echo "=========deleting objects============"
+
+                        kubectl delete -f kubernetes.yml
+                        kubectl delete -f ingress.yml
+
+                        kubectl delete -f ./agent/agent-cm.yml
+                        kubectl delete -f ./agent/agent-dc.yml
+                        kubectl delete -f ./agent/agent-svc.yml
+
+                        echo "=========creating objects============"
+
                         kubectl apply -f kubernetes.yml
                         kubectl apply -f ingress.yml
 
                         kubectl apply -f ./agent/agent-cm.yml
                         kubectl apply -f ./agent/agent-dc.yml
                         kubectl apply -f ./agent/agent-svc.yml
-
                     '''
                 }
             }
