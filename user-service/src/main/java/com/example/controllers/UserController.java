@@ -3,12 +3,9 @@ package com.example.controllers;
 import com.example.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -19,11 +16,7 @@ public class UserController {
 
     @GetMapping("/users/all")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return ResponseEntity.ok(users);
-    }
-
-    @GetMapping("/users/")
-    public ResponseEntity<List<UserDTO>> getAllUsers2() {
+        log.info("users/all");
         return ResponseEntity.ok(users);
     }
 

@@ -15,4 +15,26 @@ data:
         scrape_interval: 5s
         metrics_path: /actuator/prometheus
         static_configs:
-          - targets: ['user-service']
+          - targets: ['user-service:8081']
+      - job_name: 'kubernetes-pods'
+        params:
+          kubernetes-pods:
+            - "true"
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names:
+                - "mimikube-dev"
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+            regex: true
+            action: keep
+          - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+            regex: (.+)
+            target_label: __metrics_path__
+            action: replace
+          - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+            action: replace
+            target_label: __address__
+            regex: ([^:]+)(?::\d+)?;(\d+)
+            replacement: $1:$2

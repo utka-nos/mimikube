@@ -77,12 +77,16 @@ spec:
     # все поды с таким лейблом
     project: user-pod
   ports:
-    - name: user-port
+    - name: user-port-metrics
       protocol: TCP
       # Порт на сервисе
-      port: 80
+      port: 8081
       # Порт на поде (в контейнере)
-      targetPort: 8082
+      targetPort: 8081
+    - name: user-port
+      protocol: TCP
+      port: 80
+      targetPort: 8080
   type: NodePort
 
 ---
@@ -92,6 +96,10 @@ kind: Service
 metadata:
   name: coordinator-service
   namespace: mimikube-dev
+  annotations:
+    prometheus.io.path: /actuator/prometheus
+    prometheus.io.port: '8081'
+    prometheus.io.scrape: 'true'
 spec:
   # На какие поды будет работать этот сервис
   selector:
