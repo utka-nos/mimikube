@@ -62,9 +62,9 @@ pipeline{
                         kubectl delete -f kubernetes.yml
                         kubectl delete -f ingress.yml
 
+                        kubectl delete -f ./agent/agent-svc.yml
                         kubectl delete -f ./agent/agent-cm.yml
                         kubectl delete -f ./agent/agent-dc.yml
-                        kubectl delete -f ./agent/agent-svc.yml
 
                         echo "=========creating objects============"
 

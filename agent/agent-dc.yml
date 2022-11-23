@@ -16,6 +16,7 @@ spec:
       labels:
         name: agent-pod
     spec:
+      # Нужно для service discovery прометеуса
       serviceAccount: prometheus
       containers:
         - name: agent-container
