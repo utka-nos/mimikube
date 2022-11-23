@@ -57,7 +57,6 @@ spec:
       labels:
         project: user-pod
     spec:
-      serviceAccount: prometheus
       containers:
         - name: user-container
           image: user
