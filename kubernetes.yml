@@ -119,6 +119,7 @@ spec:
   type: NodePort
 
 ---
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -146,3 +147,19 @@ kind: ServiceAccount
 metadata:
   name: prometheus
   namespace: mimikube-dev
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: prometheus
+  namespace: mimikube-dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: prometheus
+subjects:
+  - namespace: mimikube-dev
+    kind: ServiceAccount
+    name: prometheus
