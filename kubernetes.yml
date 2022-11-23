@@ -57,6 +57,7 @@ spec:
       labels:
         project: user-pod
     spec:
+      serviceAccount: prometheus
       containers:
         - name: user-container
           image: user
@@ -117,3 +118,32 @@ spec:
       port: 8081
       targetPort: 8081
   type: NodePort
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: prometheus
+  namespace: mimikube-dev
+rules:
+  - verbs:
+      - get
+      - watch
+      - list
+    apiGroups:
+      - ''
+    resources:
+      - pods
+      - configmaps
+      - endpoints
+      - events
+      - namespaces
+      - services
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus
+  namespace: mimikube-dev
