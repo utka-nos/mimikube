@@ -112,4 +112,8 @@ spec:
       port: 80
       # Порт на поде (в контейнере)
       targetPort: 8080
+    - name: coordinator-port-metrics
+      protocol : TCP
+      port: 8081
+      targetPort: 8081
   type: NodePort
