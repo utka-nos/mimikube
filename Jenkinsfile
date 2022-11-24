@@ -61,6 +61,7 @@ pipeline{
 
                         kubectl delete -f kubernetes.yml
                         kubectl delete -f ingress.yml
+                        kubecrl delete -f secrets.yml
 
                         kubectl delete -f ./agent/agent-svc.yml
                         kubectl delete -f ./agent/agent-cm.yml
@@ -70,6 +71,7 @@ pipeline{
 
                         kubectl apply -f kubernetes.yml
                         kubectl apply -f ingress.yml
+                        kubectl apply -f secrets.yml
 
                         kubectl apply -f ./agent/agent-cm.yml
                         kubectl apply -f ./agent/agent-dc.yml

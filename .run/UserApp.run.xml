@@ -2,6 +2,7 @@
   <configuration default="false" name="UserApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <module name="user-service" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.UserApp" />
+    <option name="ACTIVE_PROFILES" value="dev" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <additionalParameters>
       <param>

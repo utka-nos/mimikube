@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8083
 
 management:
   server:
@@ -15,9 +15,9 @@ management:
 
 spring:
   datasource:
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/mimikube
+    username: dima
+    password: 1234qwer
+    url: jdbc:postgresql://localhost:5433/mimikube
   jpa:
     hibernate:
       ddl-auto: create

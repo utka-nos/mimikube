@@ -63,6 +63,10 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 8082
+          # переменные среды, которые будут вставляться в application.yml файлы
+          envFrom:
+            - secretRef:
+                name: db-secret
 
 ---
 
