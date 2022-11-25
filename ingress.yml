@@ -1,3 +1,7 @@
+# Этот объект нужен, если мы входим в порт через ingress-nginx-controller.
+# В этом случае nginx будет смотреть на правила маршрутизации из этого файла.
+# Есть другой способ - через istio, но там свои объекты и Ingress игнорируется.
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

@@ -14,6 +14,20 @@ pipeline{
             }
         }
 
+        stage('delete and create certs tls and mtls'){
+            steps {
+                script{
+                    bat '''
+                        kubectl delete -f istio-root-cert
+                        kubectl delete -f mtls-certs
+
+                        kubectl create -n istio-system secret generic mtls-certs --from-file=tls.key=certs/prometheus.test.info.key --from-file=tls.crt=certs/prometheus.test.info.crt --from-file=ca.crt=certs/test.info.crt
+                        kubectl -n istio-system create secret tls istio-root-cert --key=certs/test.info.key --cert=certs/test.info.crt
+                    '''
+                }
+            }
+        }
+
         stage('delete kubernetes objects'){
             steps {
                 script{

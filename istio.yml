@@ -97,3 +97,114 @@ spec:
             host: user-service
             port:
               number: 8081
+
+---
+
+##########################################tls ############################################
+# Через этот gateway можно будет попадать на user-service но через https соединение (через порт 443)
+# Для этого скначала надо создать секрет на основе сертификатов, которые мы создали
+# kubectl create secret tls -n istio-system istio-root-cert \
+# --key=certs/test.info.key --cert=certs/test.info.crt
+# В итоге мы сможем попасть на user-service, если в браузере пройдем по ссылке: https://test.info/
+# НЕ ЗАБЫТЬ ДОБАВИТЬ test.info в /etc/hosts
+#
+
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: https-gateway
+  namespace: mimikube-dev
+spec:
+  selector:
+    istio: ingressgateway # use istio default ingress gateway
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      # В этом модуле мы задаем параметры tls доступа
+      tls:
+        mode: SIMPLE
+        # Имя секрета с сертификатами. В нашем случае секрет лежит в неймспейсе istio-system
+        credentialName: istio-root-cert
+      # хост, по которому можно будет войти в эту дырку
+      hosts:
+        - "test.info"
+
+---
+# Тут ничего особенного, все чудеса в gateway
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: https-prometheus-vs
+  namespace: mimikube-dev
+spec:
+  hosts:
+    - "test.info"
+  gateways:
+    - https-gateway
+  http:
+    - match:
+        - gateways:
+            - https-gateway
+      route:
+        - destination:
+            port:
+              number: 80
+            host: user-service
+
+
+---
+################################# mtls #########################################
+#
+#
+#
+#
+#
+
+
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: mtls-gateway
+  namespace: mimikube-dev
+spec:
+  selector:
+    istio: ingressgateway # use istio default ingress gateway
+  servers:
+    - port:
+        # потому что порт 443 занят tls подключением
+        # Не забыть открыть этот порт в istio-ingressgateway сервисе
+        # А перед этим добавить в деплоймент istio-ingressgateway этот порт
+        # (ну или другой, главное чтобы в service был)
+        number: 8083
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: MUTUAL   # mTLS - m = MUTUAL mode
+        credentialName: mtls-certs # must be the same as secret
+      hosts:
+        - "prometheus.test.info"
+
+---
+
+# Тут ничего особенного, все чудеса в gateway
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: mtls-prometheus-vs
+  namespace: mimikube-dev
+spec:
+  hosts:
+    - "prometheus.test.info"
+  gateways:
+    - mtls-gateway
+  http:
+    - match:
+        - gateways:
+            - mtls-gateway
+      route:
+        - destination:
+            port:
+              number: 9090
+            host: agent-service
