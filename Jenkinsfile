@@ -59,6 +59,8 @@ pipeline{
 
                         echo "=========deleting objects============"
 
+                        kubectl delete -f istio.yml
+
                         kubectl delete -f kubernetes.yml
                         kubectl delete -f ingress.yml
                         kubecrl delete -f secrets.yml
@@ -76,6 +78,8 @@ pipeline{
                         kubectl apply -f ./agent/agent-cm.yml
                         kubectl apply -f ./agent/agent-dc.yml
                         kubectl apply -f ./agent/agent-svc.yml
+
+                        kubectl apply -f istio.yml
                     '''
                 }
             }

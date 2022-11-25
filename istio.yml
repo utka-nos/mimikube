@@ -1,0 +1,99 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: users-gateway
+  namespace: mimikube-dev
+spec:
+  selector:
+    istio: ingressgateway #istio default controller
+  servers:
+    - port:
+        # это порт, который прокинут на сервисе istio-ingressgateway (там их несколько штук)
+        # и не все эти порты свободны, 80 - свободен и 443(https)
+        # а 31400 - тоже свободен, но не факт, что и будет всегда такой порт
+        number: 80
+        name: http-service
+        protocol: HTTP
+      # хосты, по которым можно попасть в этот gateway снаружи (из браузера)
+      hosts:
+        - "test.info"
+    - port:
+        number: 31400
+        name: http-metrics
+        protocol: HTTP
+      hosts:
+        - "test.info"
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: prometheus-gateway
+  namespace: mimikube-dev
+spec:
+  selector:
+    istio: ingressgateway #istio default controller
+  servers:
+    - port:
+        # это порт, который прокинут на сервисе istio-ingressgateway (там их несколько штук)
+        # и не все эти порты свободны, 80 - свободен и 443(https)
+        # а 31400 - тоже свободен, но не факт, что и будет всегда такой порт
+        number: 31400
+        name: http-service
+        protocol: HTTP
+      # хосты, по которым можно попасть в этот gateway снаружи (из браузера)
+      hosts:
+        - "prometheus.prom"
+
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: user-vs
+  namespace: mimikube-dev
+spec:
+  # Это хосты, по которым можно будет достучаться до сервиса
+  # Если не указать здесь хост, то этот виртуал сервис не будет принимать его
+  hosts:
+    - "test.info"
+    - "prometheus.prom"
+  # Указывается дырка, по которой можно будет залезть сюда
+  # Если не указать здесь gateway, то его нельзя будет использовать в match
+  gateways:
+    - users-gateway
+    - prometheus-gateway
+  http:
+    - match:
+        - gateways:
+            - prometheus-gateway
+      route:
+        - destination:
+            host: agent-service
+            port:
+              number: 9090
+    # так можно искать совпадения. Если зашли по http://test.info/ - отправляет на destination, описанный в route
+    - match:
+        #- uri:
+        #    prefix: / # если поставить /users - то только если в пути будет этот префикс, то будет отправлять в user-service
+        - gateways:
+            - users-gateway
+          port: 80
+      route:
+        - destination:
+            # можно обратиться по имени сервиса
+            host: user-service
+            # Номер порта на сервисе
+            port:
+              number: 8080
+    - match:
+        - gateways:
+            - users-gateway
+          port: 31400
+      route:
+        - destination:
+            host: user-service
+            port:
+              number: 8081
