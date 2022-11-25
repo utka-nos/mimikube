@@ -87,7 +87,7 @@ spec:
             host: user-service
             # Номер порта на сервисе
             port:
-              number: 8080
+              number: 80
     - match:
         - gateways:
             - users-gateway
