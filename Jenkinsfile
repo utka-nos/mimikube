@@ -14,6 +14,33 @@ pipeline{
             }
         }
 
+        stage('delete kubernetes objects'){
+            steps {
+                script{
+                    try{
+                        bat '''
+                            minikube -p minikube docker-env --shell cmd > temp.cmd
+                            call temp.cmd
+                            del temp.cmd
+
+                            echo "=========deleting objects============"
+
+                            kubectl delete -f istio.yml
+
+                            kubectl delete -f kubernetes.yml
+                            kubectl delete -f ingress.yml
+                            kubecrl delete -f secrets.yml
+
+                            kubectl delete -f ./agent/agent-svc.yml
+                            kubectl delete -f ./agent/agent-cm.yml
+                            kubectl delete -f ./agent/agent-dc.yml
+
+                        '''
+                    }
+                }
+            }
+        }
+
         stage('delete images') {
             steps {
                 script{
@@ -56,18 +83,6 @@ pipeline{
                         minikube -p minikube docker-env --shell cmd > temp.cmd
                         call temp.cmd
                         del temp.cmd
-
-                        echo "=========deleting objects============"
-
-                        kubectl delete -f istio.yml
-
-                        kubectl delete -f kubernetes.yml
-                        kubectl delete -f ingress.yml
-                        kubecrl delete -f secrets.yml
-
-                        kubectl delete -f ./agent/agent-svc.yml
-                        kubectl delete -f ./agent/agent-cm.yml
-                        kubectl delete -f ./agent/agent-dc.yml
 
                         echo "=========creating objects============"
 
