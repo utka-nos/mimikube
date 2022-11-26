@@ -17,13 +17,18 @@ pipeline{
         stage('delete and create certs tls and mtls'){
             steps {
                 script{
-                    bat '''
-                        kubectl delete secret -n istio-system mtls-certs
-                        kubectl delete secret -n istio-system istio-root-cert
+                    try{
+                        bat '''
+                            kubectl delete secret -n istio-system mtls-certs
+                            kubectl delete secret -n istio-system istio-root-cert
 
-                        kubectl create -n istio-system secret generic mtls-certs --from-file=tls.key=certs/prometheus.test.info.key --from-file=tls.crt=certs/prometheus.test.info.crt --from-file=ca.crt=certs/test.info.crt
-                        kubectl -n istio-system create secret tls istio-root-cert --key=certs/test.info.key --cert=certs/test.info.crt
-                    '''
+                            kubectl create -n istio-system secret generic mtls-certs --from-file=tls.key=certs/prometheus.test.info.key --from-file=tls.crt=certs/prometheus.test.info.crt --from-file=ca.crt=certs/test.info.crt
+                            kubectl -n istio-system create secret tls istio-root-cert --key=certs/test.info.key --cert=certs/test.info.crt
+                        '''
+                    }
+                    catch(err) {
+                        echo err.getMessage()
+                    }
                 }
             }
         }
