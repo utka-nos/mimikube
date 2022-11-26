@@ -18,12 +18,15 @@ pipeline{
             steps {
                 script{
                     try{
+                        // В нашем случае можно создавать секреты только в istio-system namespace'e
+                        // так как внутри неймспейса нет своего ингресса
                         bat '''
-                            kubectl delete secret -n mimikube-dev mtls-certs
-                            kubectl delete secret -n mimikube-dev istio-root-cert
+                            kubectl delete secret -n istio-system my-mtls-certs
+                            kubectl delete secret -n istio-system my-tls-root-cert
 
-                            kubectl create -n mimikube-dev secret generic mtls-certs --from-file=tls.key=certs/prometheus.test.info.key --from-file=tls.crt=certs/prometheus.test.info.crt --from-file=ca.crt=certs/test.info.crt
-                            kubectl -n mimikube-dev create secret tls istio-root-cert --key=certs/test.info.key --cert=certs/test.info.crt
+
+                            kubectl create -n istio-system secret generic my-mtls-certs --from-file=tls.key=certs/prometheus.test.info.key --from-file=tls.crt=certs/prometheus.test.info.crt --from-file=ca.crt=certs/test.info.crt
+                            kubectl -n istio-system create secret tls my-tls-root-cert --key=certs/test.info.key --cert=certs/test.info.crt
                         '''
                     }
                     catch(err) {
