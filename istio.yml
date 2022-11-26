@@ -126,7 +126,7 @@ spec:
       tls:
         mode: SIMPLE
         # Имя секрета с сертификатами. В нашем случае секрет лежит в неймспейсе istio-system
-        credentialName: istio-root-cert
+        credentialName: my-tls-root-cert
       # хост, по которому можно будет войти в эту дырку
       hosts:
         - "test.info"
@@ -182,7 +182,7 @@ spec:
         protocol: HTTPS
       tls:
         mode: MUTUAL   # mTLS - m = MUTUAL mode
-        credentialName: mtls-certs # must be the same as secret
+        credentialName: my-mtls-certs # must be the same as secret
       hosts:
         - "prometheus.test.info"
 
